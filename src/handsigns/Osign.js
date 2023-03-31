@@ -31,7 +31,7 @@ export const oSign = new GestureDescription('O');
 
 //Thumb
 oSign.addCurl(Finger.Thumb, FingerCurl.NoCurl, 1.0);
-oSign.addDirection(Finger.Index, FingerDirection.DiagonalUpRight, 0.70);
+oSign.addDirection(Finger.Thumb, FingerDirection.DiagonalUpRight, 0.70);
 
 //Index
 oSign.addCurl(Finger.Index, FingerCurl.HalfCurl, 1);

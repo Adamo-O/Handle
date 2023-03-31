@@ -31,7 +31,7 @@ export const vSign = new GestureDescription('V');
 
 //Thumb
 vSign.addCurl(Finger.Thumb, FingerCurl.HalfCurl, 1.0);
-vSign.addDirection(Finger.Index, FingerDirection.DiagonalUpLeft, 0.70);
+vSign.addDirection(Finger.Thumb, FingerDirection.DiagonalUpLeft, 0.70);
 
 //Index
 vSign.addCurl(Finger.Index, FingerCurl.NoCurl, 1);

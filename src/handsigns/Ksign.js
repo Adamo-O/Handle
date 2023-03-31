@@ -31,7 +31,7 @@ export const kSign = new GestureDescription('K');
 
 //Thumb
 kSign.addCurl(Finger.Thumb, FingerCurl.NoCurl, 1.0);
-kSign.addDirection(Finger.Index, FingerDirection.DiagonalUpLeft, 0.70);
+kSign.addDirection(Finger.Thumb, FingerDirection.DiagonalUpLeft, 0.70);
 
 //Index
 kSign.addCurl(Finger.Index, FingerCurl.NoCurl, 1);

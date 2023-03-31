@@ -31,7 +31,7 @@ export const zSign = new GestureDescription('Z');
 
 //Thumb
 zSign.addCurl(Finger.Thumb, FingerCurl.NoCurl, 0.8);
-zSign.addDirection(Finger.Index, FingerDirection.HorizontalLeft, 0.70);
+zSign.addDirection(Finger.Thumb, FingerDirection.HorizontalLeft, 0.70);
 
 //Index
 zSign.addCurl(Finger.Index, FingerCurl.NoCurl, 1);

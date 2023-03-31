@@ -1,4 +1,7 @@
 import { AnnotatedPrediction } from "@tensorflow-models/handpose";
+import { Coords3D } from "@tensorflow-models/handpose/dist/pipeline";
+
+const DEFAULT_LINE_WIDTH = 2;
 
 //finger points
 const fingerJoints = {
@@ -58,4 +61,49 @@ export const drawHand = (prediction: AnnotatedPrediction[], ctx: CanvasRendering
           }
       })
   }
+}
+
+export const newDrawHand = (hands: AnnotatedPrediction[], ctx: CanvasRenderingContext2D) => {
+  ctx.fillStyle = "Red";
+  ctx.strokeStyle = "White";
+  ctx.lineWidth = DEFAULT_LINE_WIDTH;
+
+  if (hands.length > 0) {
+    hands.forEach(hand => {
+      hand.landmarks.forEach(landmark => {
+        for (let i = 0; i < landmark.length; i++) {
+          const y = landmark[0];
+          const x = landmark[1];
+          drawPoint(x - 2, y - 2, 3, ctx);
+        }
+      })
+    
+      const fingers = Object.keys(fingerJoints);
+      for (let i = 0; i < fingers.length; i++) {
+        const finger = fingers[i];
+        const points: Coords3D = fingerJoints[finger].map((idx: number) => hand.landmarks[idx]);
+        drawPath(points, false, ctx);
+      }
+    })
+  }
+}
+
+function drawPath(points: Coords3D, closePath: boolean, ctx: CanvasRenderingContext2D) {
+  const region = new Path2D();
+  region.moveTo(points[0][0], points[0][1]);
+  for (let i = 1; i < points.length; i++) {
+    const point = points[i];
+    region.lineTo(point[0], point[1]);
+  }
+
+  if (closePath) {
+    region.closePath();
+  }
+  ctx.stroke(region);
+}
+
+function drawPoint(y: number, x: number, r: number, ctx: CanvasRenderingContext2D) {
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, 2 * Math.PI);
+  ctx.fill();
 }

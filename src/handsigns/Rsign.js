@@ -31,7 +31,7 @@ export const rSign = new GestureDescription('R');
 
 //Thumb
 rSign.addCurl(Finger.Thumb, FingerCurl.HalfCurl, 1.0);
-rSign.addDirection(Finger.Index, FingerDirection.DiagonalUpLeft, 0.70);
+rSign.addDirection(Finger.Thumb, FingerDirection.DiagonalUpLeft, 0.70);
 
 //Index
 rSign.addCurl(Finger.Index, FingerCurl.NoCurl, 1);

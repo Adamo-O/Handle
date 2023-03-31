@@ -5,3 +5,6 @@
   position: relative;
   float: left;
 }
+.App {
+  padding: 1em;
+}

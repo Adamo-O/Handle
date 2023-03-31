@@ -28,7 +28,7 @@ import * as handpose from "@tensorflow-models/handpose";
 import { Camera } from "./camera";
 import { GE } from "./gestureEstimator";
 
-import { drawHand } from "./handPoseDraw";
+import { drawHand, newDrawHand } from "./handPoseDraw";
 
 const staticCamera = { targetFPS: 60, sizeOption: "640 X 480" };
 
@@ -60,10 +60,19 @@ async function renderResult() {
 
       if (hands.length > 0) {
         const estimatedGestures = await GE.estimate(hands[0].landmarks, 6.5);
-        console.log(estimatedGestures);
+
+        if (estimatedGestures.gestures && estimatedGestures.gestures.length > 0) {
+          const confidence = estimatedGestures.gestures.map(p => p.score)
+          const maxConfidence = confidence.indexOf(
+            Math.max.apply(undefined, confidence)
+          )
+  
+          console.log(maxConfidence, estimatedGestures.gestures);
+          
+          console.log(estimatedGestures.gestures[maxConfidence].name);
+        }
       }
     } catch (error) {
-      // detector.dispose();
       detector = null;
       alert(error);
     }
@@ -71,10 +80,7 @@ async function renderResult() {
 
   camera.drawCtx();
   drawHand(hands, camera.ctx);
-
-  // The null check makes sure the UI is not in the middle of changing to a
-  // different model. If during model change, the result is from an old model,
-  // which shouldn't be rendered.
+  // newDrawHand(hands, camera.ctx);
 }
 
 async function renderPrediction() {

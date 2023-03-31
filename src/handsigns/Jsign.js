@@ -31,7 +31,7 @@ export const jSign = new GestureDescription('J');
 
 //Thumb
 jSign.addCurl(Finger.Thumb, FingerCurl.NoCurl, 1.0);
-jSign.addDirection(Finger.Index, FingerDirection.DiagonalUpRight, 0.70);
+jSign.addDirection(Finger.Thumb, FingerDirection.DiagonalUpRight, 0.70);
 
 //Index
 jSign.addCurl(Finger.Index, FingerCurl.FullCurl, 1);
