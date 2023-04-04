@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Basic style */
+.case {
+	@apply flex h-16 w-16 content-center items-center justify-center rounded border border-slate-600
+		text-3xl text-black shadow-lg transition-colors dark:border-0 dark:border-white dark:bg-gray-800;
+}
+
+/* Edited case */
+.case-b {
+	@apply bg-slate-200 underline;
+}
+
+/* Wrong letter case */
+.case-e {
+	@apply bg-slate-400;
+}
+
+/* Right letter case */
+.case-g {
+	@apply bg-green-400;
+}
+
+/* Wrongly placed letter */
+.case-y {
+	@apply bg-yellow-400;
+}

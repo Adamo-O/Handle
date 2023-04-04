@@ -22,8 +22,45 @@ import { drawHand, newDrawHand } from "./helpers/handPoseDraw";
 export function App() {
   const [loading, setLoading] = useState(true);
   const [currentLetter, setCurrentLetter] = useState<string>();
+  const [selectedLetter, setSelectedLetter] = useState<string>();
   const [confidence, setConfidence] = useState<number>(0);
+  const [timeoutID, setTimeoutID] = useState<NodeJS.Timeout>();
+  const [intervalID, setIntervalID] = useState<NodeJS.Timeout>();
+  const [selectedLetterProgress, setSelectedLetterProgress] = useState<number>(0);
 
+  useEffect(() => {
+    clearTimeout(timeoutID);
+    // TODO make interval to track progress on holding the same letter for 3 seconds
+    // clearInterval(intervalID);
+    
+    // const selectedInterval = setInterval(() => {
+    //   if (selectedLetterProgress >= 100) {
+    //     console.log('finished interval fuck');
+        
+    //     clearInterval(selectedInterval);
+    //     setSelectedLetterProgress(0);
+    //     return;
+    //   } else {        
+    //     setSelectedLetterProgress(currProgress => currProgress + (100/3000 * 100));
+    //   }
+    // }, 100)
+
+    const timeoutid = setTimeout((previousLetter) => {
+      if (previousLetter && currentLetter && previousLetter === currentLetter) {
+        setSelectedLetter(currentLetter);
+      }
+      console.log(currentLetter);
+    }, 3000, currentLetter)
+
+    setTimeoutID(timeoutid);
+    // setIntervalID(selectedInterval)
+  
+    return () => {
+      clearTimeout(timeoutID);
+      // clearInterval(selectedInterval);
+    }
+  }, [currentLetter])
+  
   const staticCamera = { targetFPS: 60, sizeOption: "640 X 480" };
 
   let detector: handpose.HandPose, camera: Camera;
@@ -62,12 +99,15 @@ export function App() {
             const maxConfidence = Math.max.apply(undefined, confidence);
             const maxConfidenceIndex = confidence.indexOf(maxConfidence);
 
-            console.log(estimatedGestures);
+            // console.log(estimatedGestures);
             setCurrentLetter(
               estimatedGestures.gestures[maxConfidenceIndex].name
             );
             setConfidence(maxConfidence);
           }
+        }
+        else {
+          setCurrentLetter(null);
         }
       } catch (error) {
         detector = null;
@@ -80,11 +120,13 @@ export function App() {
     // newDrawHand(hands, camera.ctx); // Red and white hands
   }
 
+  // Render on each frame
   async function renderPrediction() {
     await renderResult();
     requestAnimationFrame(renderPrediction);
   }
 
+  // Initialize camera and detector
   async function app() {
     camera = await Camera.setupCamera(staticCamera);
     detector = await createDetector();
@@ -127,6 +169,11 @@ export function App() {
         <>
           <h2>{currentLetter}</h2>
           <h3>Confidence score: {confidence * 10}%</h3>
+          <h2>CONFIRMED letter: {selectedLetter}</h2>
+          <div>
+            <div className="bg-green-500" style={{ width: `${selectedLetterProgress}%` }}>s</div>
+            <p>{selectedLetterProgress}%</p>
+          </div>
         </>
       )}
     </div>
