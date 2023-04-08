@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 // import { app } from "./helpers/handDetection"; // TODO TEST
 // import { app as app2 } from "./helpers/handPose"; // TODO TEST
 import "./App.css";
+import Wordle from "./wordle";
 
 // TODO TEST
 import "@tensorflow/tfjs-backend-webgl";
@@ -26,41 +27,52 @@ export function App() {
   const [confidence, setConfidence] = useState<number>(0);
   const [timeoutID, setTimeoutID] = useState<NodeJS.Timeout>();
   const [intervalID, setIntervalID] = useState<NodeJS.Timeout>();
-  const [selectedLetterProgress, setSelectedLetterProgress] = useState<number>(0);
+  const [selectedLetterProgress, setSelectedLetterProgress] =
+    useState<number>(0);
+
+  const [input, setInput] = useState<string>("");
 
   useEffect(() => {
     clearTimeout(timeoutID);
     // TODO make interval to track progress on holding the same letter for 3 seconds
     // clearInterval(intervalID);
-    
+
     // const selectedInterval = setInterval(() => {
     //   if (selectedLetterProgress >= 100) {
     //     console.log('finished interval fuck');
-        
+
     //     clearInterval(selectedInterval);
     //     setSelectedLetterProgress(0);
     //     return;
-    //   } else {        
+    //   } else {
     //     setSelectedLetterProgress(currProgress => currProgress + (100/3000 * 100));
     //   }
     // }, 100)
 
-    const timeoutid = setTimeout((previousLetter) => {
-      if (previousLetter && currentLetter && previousLetter === currentLetter) {
-        setSelectedLetter(currentLetter);
-      }
-      console.log(currentLetter);
-    }, 3000, currentLetter)
+    const timeoutid = setTimeout(
+      (previousLetter) => {
+        if (
+          previousLetter &&
+          currentLetter &&
+          previousLetter === currentLetter
+        ) {
+          setSelectedLetter(currentLetter);
+        }
+        console.log(currentLetter);
+      },
+      3000,
+      currentLetter
+    );
 
     setTimeoutID(timeoutid);
     // setIntervalID(selectedInterval)
-  
+
     return () => {
       clearTimeout(timeoutID);
       // clearInterval(selectedInterval);
-    }
-  }, [currentLetter])
-  
+    };
+  }, [currentLetter]);
+
   const staticCamera = { targetFPS: 60, sizeOption: "640 X 480" };
 
   let detector: handpose.HandPose, camera: Camera;
@@ -105,8 +117,7 @@ export function App() {
             );
             setConfidence(maxConfidence);
           }
-        }
-        else {
+        } else {
           setCurrentLetter(null);
         }
       } catch (error) {
@@ -160,7 +171,7 @@ export function App() {
             transform: "scaleX(-1)",
             visibility: "hidden",
             width: "auto",
-            height: "auto",
+            height: "auto"
           }}
         ></video>
       </div>
@@ -171,11 +182,29 @@ export function App() {
           <h3>Confidence score: {confidence * 10}%</h3>
           <h2>CONFIRMED letter: {selectedLetter}</h2>
           <div>
-            <div className="bg-green-500" style={{ width: `${selectedLetterProgress}%` }}>s</div>
+            <div
+              className="bg-green-500"
+              style={{ width: `${selectedLetterProgress}%` }}
+            >
+              s
+            </div>
             <p>{selectedLetterProgress}%</p>
           </div>
         </>
       )}
+      <input
+        value={input}
+        placeholder="temp input"
+        onChange={(e) => {
+          if (
+            e.target.value.length <= 5 &&
+            (/^[a-zA-Z]+$/.test(e.target.value) || e.target.value === "")
+          ) {
+            setInput(e.target.value);
+          }
+        }}
+      />
+      <Wordle input={input} setInput={setInput} />
     </div>
   );
 }
