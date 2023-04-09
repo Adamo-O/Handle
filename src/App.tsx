@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 // import { app } from "./helpers/handDetection"; // TODO TEST
 // import { app as app2 } from "./helpers/handPose"; // TODO TEST
 import "./App.css";
@@ -30,6 +30,8 @@ export function App() {
   const [isCountingDown, setIsCountingDown] = useState(false);
   const [input, setInput] = useState<string>("");
 
+  const addWordButtonRef = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
     clearTimeout(timeoutID);
     const timeoutid = setTimeout(
@@ -39,8 +41,12 @@ export function App() {
           currentLetter &&
           previousLetter === currentLetter
         ) {
-          setSelectedLetter(currentLetter);
-          setInput((currInput) => currInput + currentLetter);
+          if (input.length < 5 && currentLetter !== "👍") {
+            setSelectedLetter(currentLetter);
+            setInput((currInput) => currInput + currentLetter);
+          } else if (input.length === 5 && currentLetter === "👍") {
+            addWordButtonRef.current.click();
+          }
         }
         console.log(currentLetter);
       },
@@ -142,53 +148,70 @@ export function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div
+      className="App"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          addWordButtonRef.current.click();
+        }
+      }}
+    >
       <h1>Handle</h1>
       {loading && <h2>Loading 🔃</h2>}
-      <div className="canvas-wrapper" style={{ position: "relative" }}>
-        <canvas id="output"></canvas>
-        <video
-          id="video"
-          playsInline
-          style={{
-            WebkitTransform: "scaleX(-1)",
-            transform: "scaleX(-1)",
-            display: "none",
-            visibility: "hidden",
-            width: "auto",
-            height: "auto",
-          }}
-        ></video>
-        <div
-          id="countdown-timer"
-          style={{ position: "absolute", display: "none" }}
-        >
-          {currentLetter && isCountingDown && (
-            <CountdownCircleTimer
-              key={currentLetter}
-              onComplete={() => {
-                setIsCountingDown(false);
-                document.getElementById("countdown-timer").style.display =
-                  "none";
-                return { shouldRepeat: false };
+      <div className="flex flex-wrap gap-6">
+        <div>
+          <div className="canvas-wrapper relative inline">
+            <canvas id="output"></canvas>
+            <video
+              id="video"
+              playsInline
+              style={{
+                WebkitTransform: "scaleX(-1)",
+                transform: "scaleX(-1)",
+                display: "none",
+                visibility: "hidden",
+                width: "auto",
+                height: "auto",
               }}
-              isPlaying
-              colors="#E5007B"
-              duration={3}
-              size={250}
+            ></video>
+            <div
+              id="countdown-timer"
+              style={{ position: "absolute", display: "none" }}
             >
-              {({ remainingTime }) => (
-                <div className="flex flex-col">
-                  <h2 className="font-bold text-2xl">{currentLetter}</h2>
-                  <h3 className="font-bold text-lg">{remainingTime}</h3>
-                </div>
+              {currentLetter && isCountingDown && (
+                <CountdownCircleTimer
+                  key={currentLetter}
+                  onComplete={() => {
+                    setIsCountingDown(false);
+                    document.getElementById("countdown-timer").style.display =
+                      "none";
+                    return { shouldRepeat: false };
+                  }}
+                  isPlaying
+                  colors="#E5007B"
+                  duration={3}
+                  size={250}
+                >
+                  {({ remainingTime }) => (
+                    <div className="flex flex-col">
+                      <h2 className="font-bold text-2xl">{currentLetter}</h2>
+                      <h3 className="font-bold text-lg">{remainingTime}</h3>
+                    </div>
+                  )}
+                  {/* <p>{countDown}</p> */}
+                </CountdownCircleTimer>
               )}
-              {/* <p>{countDown}</p> */}
-            </CountdownCircleTimer>
-          )}
+            </div>
+          </div>
+          <div id="webcam-container"></div>
         </div>
+        <Wordle
+          input={input}
+          setInput={setInput}
+          addWordButtonRef={addWordButtonRef}
+        />
       </div>
-      <div id="webcam-container"></div>
       {!loading && (
         <>
           <h2>{currentLetter}</h2>
@@ -208,7 +231,6 @@ export function App() {
           }
         }}
       />
-      <Wordle input={input} setInput={setInput} />
     </div>
   );
 }

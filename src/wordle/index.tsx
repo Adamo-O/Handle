@@ -44,7 +44,15 @@ function build_row(
   return out;
 }
 
-function Wordle({ input, setInput }) {
+function Wordle({
+  input,
+  setInput,
+  addWordButtonRef,
+}: {
+  input: string;
+  setInput: React.Dispatch<React.SetStateAction<string>>;
+  addWordButtonRef: React.MutableRefObject<HTMLButtonElement>;
+}) {
   let [curentWord, setCurentWord] = useState<string | undefined>(undefined);
 
   let [newWord, setNewWord] = useState(false);
@@ -93,8 +101,8 @@ function Wordle({ input, setInput }) {
   }
 
   return (
-    <div className="Wordle">
-      <div className="flex items-center justify-center p-6">
+    <div className="Wordle inline flex-grow">
+      <div className="flex items-center justify-center">
         <div className="flex w-max flex-col rounded border border-slate-600 p-4 shadow">
           <button
             className="absolute h-10 w-10 rounded border border-slate-600 bg-slate-200 text-black transition-colors hover:bg-slate-400 disabled:bg-slate-300 dark:border-0 dark:bg-gray-800 dark:text-slate-100 dark:hover:bg-gray-600"
@@ -151,6 +159,7 @@ function Wordle({ input, setInput }) {
               autoFocus
             /> */}
             <button
+              ref={addWordButtonRef}
               className="h-16 w-16 rounded border border-slate-600 bg-slate-200 text-black transition-colors hover:bg-slate-400 disabled:bg-slate-300 dark:border-0 dark:bg-gray-800 dark:text-slate-100 dark:hover:bg-gray-600"
               onClick={() => {
                 push_rows();
