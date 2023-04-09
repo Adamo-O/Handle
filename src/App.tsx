@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 // import { app } from "./helpers/handDetection"; // TODO TEST
 // import { app as app2 } from "./helpers/handPose"; // TODO TEST
 import "./App.css";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import Wordle from "./wordle";
 
 // TODO TEST
@@ -26,29 +27,11 @@ export function App() {
   const [selectedLetter, setSelectedLetter] = useState<string>();
   const [confidence, setConfidence] = useState<number>(0);
   const [timeoutID, setTimeoutID] = useState<NodeJS.Timeout>();
-  const [intervalID, setIntervalID] = useState<NodeJS.Timeout>();
-  const [selectedLetterProgress, setSelectedLetterProgress] =
-    useState<number>(0);
-
+  const [isCountingDown, setIsCountingDown] = useState(false);
   const [input, setInput] = useState<string>("");
 
   useEffect(() => {
     clearTimeout(timeoutID);
-    // TODO make interval to track progress on holding the same letter for 3 seconds
-    // clearInterval(intervalID);
-
-    // const selectedInterval = setInterval(() => {
-    //   if (selectedLetterProgress >= 100) {
-    //     console.log('finished interval fuck');
-
-    //     clearInterval(selectedInterval);
-    //     setSelectedLetterProgress(0);
-    //     return;
-    //   } else {
-    //     setSelectedLetterProgress(currProgress => currProgress + (100/3000 * 100));
-    //   }
-    // }, 100)
-
     const timeoutid = setTimeout(
       (previousLetter) => {
         if (
@@ -57,6 +40,7 @@ export function App() {
           previousLetter === currentLetter
         ) {
           setSelectedLetter(currentLetter);
+          setInput((currInput) => currInput + currentLetter);
         }
         console.log(currentLetter);
       },
@@ -65,11 +49,10 @@ export function App() {
     );
 
     setTimeoutID(timeoutid);
-    // setIntervalID(selectedInterval)
+    setIsCountingDown(true);
 
     return () => {
       clearTimeout(timeoutID);
-      // clearInterval(selectedInterval);
     };
   }, [currentLetter]);
 
@@ -118,6 +101,7 @@ export function App() {
             setConfidence(maxConfidence);
           }
         } else {
+          document.getElementById("countdown-timer").style.display = "none";
           setCurrentLetter(null);
         }
       } catch (error) {
@@ -161,7 +145,7 @@ export function App() {
     <div className="App">
       <h1>Handle</h1>
       {loading && <h2>Loading 🔃</h2>}
-      <div className="canvas-wrapper">
+      <div className="canvas-wrapper" style={{ position: "relative" }}>
         <canvas id="output"></canvas>
         <video
           id="video"
@@ -169,11 +153,40 @@ export function App() {
           style={{
             WebkitTransform: "scaleX(-1)",
             transform: "scaleX(-1)",
+            display: "none",
             visibility: "hidden",
             width: "auto",
-            height: "auto"
+            height: "auto",
           }}
         ></video>
+        <div
+          id="countdown-timer"
+          style={{ position: "absolute", display: "none" }}
+        >
+          {currentLetter && isCountingDown && (
+            <CountdownCircleTimer
+              key={currentLetter}
+              onComplete={() => {
+                setIsCountingDown(false);
+                document.getElementById("countdown-timer").style.display =
+                  "none";
+                return { shouldRepeat: false };
+              }}
+              isPlaying
+              colors="#E5007B"
+              duration={3}
+              size={250}
+            >
+              {({ remainingTime }) => (
+                <div className="flex flex-col">
+                  <h2 className="font-bold text-2xl">{currentLetter}</h2>
+                  <h3 className="font-bold text-lg">{remainingTime}</h3>
+                </div>
+              )}
+              {/* <p>{countDown}</p> */}
+            </CountdownCircleTimer>
+          )}
+        </div>
       </div>
       <div id="webcam-container"></div>
       {!loading && (
@@ -181,15 +194,6 @@ export function App() {
           <h2>{currentLetter}</h2>
           <h3>Confidence score: {confidence * 10}%</h3>
           <h2>CONFIRMED letter: {selectedLetter}</h2>
-          <div>
-            <div
-              className="bg-green-500"
-              style={{ width: `${selectedLetterProgress}%` }}
-            >
-              s
-            </div>
-            <p>{selectedLetterProgress}%</p>
-          </div>
         </>
       )}
       <input

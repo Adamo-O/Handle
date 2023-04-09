@@ -16,8 +16,14 @@ const fingerJoints = {
 export const drawHand = (prediction: AnnotatedPrediction[], ctx: CanvasRenderingContext2D) => {
   //check the prediction
   if(prediction.length > 0){
-      //loop to the preditions
-      prediction.forEach((prediction) =>{
+    //loop to the preditions
+    prediction.forEach((prediction) =>{        
+        const cdtimer = document.getElementById('countdown-timer');
+        cdtimer.style.display = 'inline';
+                
+        cdtimer.style.top = (prediction.annotations.middleFinger[0][1] - 100).toString() + "px";
+        cdtimer.style.left = (ctx.canvas.width - prediction.annotations.middleFinger[0][0] - 100).toString() + "px";
+
           //grab landmarks
           const landmarks = prediction.landmarks;
 

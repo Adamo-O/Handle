@@ -28,4 +28,5 @@ export const GE = new fp.GestureEstimator([
   Handsigns.xSign,
   Handsigns.ySign,
   Handsigns.zSign,
+  Handsigns.thumbSign
 ])
