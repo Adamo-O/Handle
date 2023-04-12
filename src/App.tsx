@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import Wordle from "./wordle";
+import Modal from "react-modal";
 
 // TODO TEST
 import "@tensorflow/tfjs-backend-webgl";
@@ -20,6 +21,7 @@ import { Camera } from "./helpers/camera";
 import { GE } from "./helpers/gestureEstimator";
 
 import { drawHand, newDrawHand } from "./helpers/handPoseDraw";
+import Box from "./wordle/components/Box";
 
 export function App() {
   const [loading, setLoading] = useState(true);
@@ -29,6 +31,7 @@ export function App() {
   const [timeoutID, setTimeoutID] = useState<NodeJS.Timeout>();
   const [isCountingDown, setIsCountingDown] = useState(false);
   const [input, setInput] = useState<string>("");
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const addWordButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -212,25 +215,59 @@ export function App() {
           addWordButtonRef={addWordButtonRef}
         />
       </div>
-      {!loading && (
+      {/* {!loading && (
         <>
           <h2>{currentLetter}</h2>
           <h3>Confidence score: {confidence * 10}%</h3>
           <h2>CONFIRMED letter: {selectedLetter}</h2>
         </>
+      )} */}
+      <div className="flex flex-row gap-2">
+        {input?.split("").map((letter) => (
+          <Box t="display" letter={letter} />
+        ))}
+      </div>
+      {input ? (
+        <div className="my-4">
+          <button
+            className="rounded border border-slate-600 bg-slate-200 text-black transition-colors hover:bg-slate-400 disabled:bg-slate-300 dark:border-0 dark:bg-gray-800 dark:text-slate-100 dark:hover:bg-gray-600"
+            onClick={() => setInput("")}
+          >
+            {" "}
+            Clear Input{" "}
+          </button>
+        </div>
+      ) : (
+        <div />
       )}
-      <input
-        value={input}
-        placeholder="temp input"
-        onChange={(e) => {
-          if (
-            e.target.value.length <= 5 &&
-            (/^[a-zA-Z]+$/.test(e.target.value) || e.target.value === "")
-          ) {
-            setInput(e.target.value);
-          }
-        }}
-      />
+
+      <button
+        onClick={() => setModalIsOpen(true)}
+        className="rounded border border-slate-600 bg-slate-200 text-black transition-colors hover:bg-slate-400 disabled:bg-slate-300 dark:border-0 dark:bg-gray-800 dark:text-slate-100 dark:hover:bg-gray-600"
+      >
+        Need Help?
+      </button>
+
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        className="rounded border border-slate-600 bg-slate-200 dark:border-0 dark:bg-gray-800 dark:text-slate-100 w-3/4 h-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+      >
+        <button
+          className="absolute top-0 right-0 m-4"
+          onClick={() => setModalIsOpen(false)}
+        >
+          X
+        </button>
+        <h1 className="text-white text-center my-6">ASL Cheat Sheet</h1>
+        <div className="flex items-center justify-center">
+          <img
+            src="https://d.newsweek.com/en/full/1394686/asl-getty-images.jpg"
+            alt="Image description"
+            className="w-3/5 h-auto flex justify-center mb-20"
+          />
+        </div>
+      </Modal>
     </div>
   );
 }

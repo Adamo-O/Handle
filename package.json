@@ -17,10 +17,12 @@
     "@tensorflow/tfjs-backend-webgl": "^3.9.0",
     "@tensorflow/tfjs-converter": "^3.9.0",
     "@tensorflow/tfjs-core": "^3.9.0",
+    "@types/react-modal": "^3.13.1",
     "fingerpose": "^0.1.0",
     "react": "^18.2.0",
     "react-countdown-circle-timer": "^3.2.1",
     "react-dom": "^18.2.0",
+    "react-modal": "^3.16.1",
     "scatter-gl": "0.0.8"
   },
   "devDependencies": {
