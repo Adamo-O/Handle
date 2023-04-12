@@ -105,7 +105,7 @@ function Wordle({
       <div className="flex items-center justify-center">
         <div className="flex w-max flex-col rounded border border-slate-600 p-4 shadow">
           <button
-            className="absolute h-10 w-10 rounded border border-slate-600 bg-slate-200 text-black transition-colors hover:bg-slate-400 disabled:bg-slate-300 dark:border-0 dark:bg-gray-800 dark:text-slate-100 dark:hover:bg-gray-600"
+            className="absolute h-10 w-20 rounded border border-slate-600 bg-slate-200 text-black transition-colors hover:bg-slate-400 disabled:bg-slate-300 dark:border-0 dark:bg-gray-800 dark:text-slate-100 dark:hover:bg-gray-600"
             onClick={reset_game}
           >
             New
@@ -123,7 +123,7 @@ function Wordle({
           >
             {hasWon() ? "You Won" : hasLost() ? "You Lose" : "Handle"}
           </h1>
-          <div className="grid select-none grid-cols-5 grid-rows-6 gap-4">
+          <div className="grid select-none grid-cols-5 grid-rows-6 gap-y-4 gap-x-2">
             {(() => {
               let lines = [];
               for (let r = 0; r < 5; r++) {
@@ -160,7 +160,7 @@ function Wordle({
             /> */}
             <button
               ref={addWordButtonRef}
-              className="h-16 w-16 rounded border border-slate-600 bg-slate-200 text-black transition-colors hover:bg-slate-400 disabled:bg-slate-300 dark:border-0 dark:bg-gray-800 dark:text-slate-100 dark:hover:bg-gray-600"
+              className="h-16 w-30 rounded border border-slate-600 bg-slate-200 text-black transition-colors hover:bg-slate-400 disabled:bg-slate-300 dark:border-0 dark:bg-gray-800 dark:text-slate-100 dark:hover:bg-gray-600"
               onClick={() => {
                 push_rows();
               }}

@@ -1,12 +1,15 @@
 import "./Box.css";
 
 function Box(props: {
-  t?: "edit" | "right" | "wrong" | "wplaced";
+  t?: "edit" | "right" | "wrong" | "wplaced" | "display";
   letter: string;
 }) {
   let case_type = "";
 
   switch (props.t) {
+    case "display":
+      case_type = "case-x";
+      break;
     case "edit":
       case_type = "case-b";
       break;
