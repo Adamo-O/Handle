@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import Box from "./components/Box";
+import Confetti from "react-confetti";
+import useWindowSize from "react-use/lib/useWindowSize";
 
 // API link for random words
-const random_word_api = 'https://random-word-api.vercel.app/api?words=1&length=5';
+const random_word_api =
+  "https://random-word-api.vercel.app/api?words=1&length=5";
 
 /**
  * @param curent_word The word to guess, used to determine the color of the letters
@@ -65,6 +68,8 @@ function Wordle({
   // let [input, setInput] = useState("");
 
   let [win, setWin] = useState(false);
+  const [confettiIncrement, setConfettiIncrement] = useState(0);
+  const { width, height } = useWindowSize();
 
   function hasWon(): boolean {
     return win;
@@ -89,8 +94,9 @@ function Wordle({
       let r = rows;
       r.push(input.toLowerCase());
       setRows(r);
-      if (input === curentWord) {
+      if (input.toLowerCase() === curentWord) {
         setWin(true);
+        setConfettiIncrement((curr) => curr + 1);
       }
       setInput("");
     }
@@ -104,37 +110,49 @@ function Wordle({
   }
 
   return (
-    <div className="Wordle inline flex-grow">
-      <div className="flex items-center justify-center">
-        <div className="flex w-max flex-col rounded border border-slate-600 p-4 shadow">
-          <button
-            className="absolute h-10 w-20 rounded border border-slate-600 bg-slate-200 text-black transition-colors hover:bg-slate-400 disabled:bg-slate-300 dark:border-0 dark:bg-gray-800 dark:text-slate-100 dark:hover:bg-gray-600"
-            onClick={reset_game}
-          >
-            New
-          </button>
-          <h1
-            className={`mb-6 mt-2 text-center text-xl font-bold transition-colors ${(() => {
-              if (hasWon()) {
-                return "text-green-600";
-              } else if (hasLost()) {
-                return "text-red-600";
-              } else {
-                return "text-black dark:text-slate-100";
-              }
-            })()}`}
-          >
-            {hasWon() ? "You Won" : hasLost() ? "You Lose" : "Handle"}
-          </h1>
-          <div className="grid select-none grid-cols-5 grid-rows-6 gap-y-4 gap-x-2">
-            {(() => {
-              let lines = [];
-              for (let r = 0; r < 5; r++) {
-                lines.push(build_row(curentWord, rows[r], r));
-              }
-              return lines;
-            })()}
-            {/* <input
+    <>
+      {confettiIncrement > 0 && win && (
+        <Confetti
+          width={width}
+          height={height}
+          key={confettiIncrement}
+          recycle={false}
+          numberOfPieces={1500}
+          tweenDuration={8000}
+          gravity={0.1}
+        />
+      )}
+      <div className="Wordle inline flex-grow">
+        <div className="flex items-center justify-center">
+          <div className="flex w-max flex-col rounded border border-slate-600 p-4 shadow">
+            <button
+              className="absolute h-10 w-20 rounded border border-slate-600 bg-slate-200 text-black transition-colors hover:bg-slate-400 disabled:bg-slate-300 dark:border-0 dark:bg-gray-800 dark:text-slate-100 dark:hover:bg-gray-600"
+              onClick={reset_game}
+            >
+              New
+            </button>
+            <h1
+              className={`mb-6 mt-2 text-center text-xl font-bold transition-colors ${(() => {
+                if (hasWon()) {
+                  return "text-green-600";
+                } else if (hasLost()) {
+                  return "text-red-600";
+                } else {
+                  return "text-black dark:text-slate-100";
+                }
+              })()}`}
+            >
+              {hasWon() ? "You Won" : hasLost() ? "You Lose" : "Handle"}
+            </h1>
+            <div className="grid select-none grid-cols-5 grid-rows-6 gap-y-4 gap-x-2">
+              {(() => {
+                let lines = [];
+                for (let r = 0; r < 5; r++) {
+                  lines.push(build_row(curentWord, rows[r], r));
+                }
+                return lines;
+              })()}
+              {/* <input
               type="text"
               name="input"
               id="input"
@@ -161,19 +179,20 @@ function Wordle({
               }}
               autoFocus
             /> */}
-            <button
-              ref={addWordButtonRef}
-              className="h-16 w-30 rounded border border-slate-600 bg-slate-200 text-black transition-colors hover:bg-slate-400 disabled:bg-slate-300 dark:border-0 dark:bg-gray-800 dark:text-slate-100 dark:hover:bg-gray-600"
-              onClick={() => {
-                push_rows();
-              }}
-            >
-              Enter
-            </button>
+              <button
+                ref={addWordButtonRef}
+                className="h-16 w-30 rounded border border-slate-600 bg-slate-200 text-black transition-colors hover:bg-slate-400 disabled:bg-slate-300 dark:border-0 dark:bg-gray-800 dark:text-slate-100 dark:hover:bg-gray-600"
+                onClick={() => {
+                  push_rows();
+                }}
+              >
+                Enter
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

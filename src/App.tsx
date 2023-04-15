@@ -5,10 +5,11 @@ import "./App.css";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import Wordle from "./wordle";
 import Modal from "react-modal";
+import wavingHandUrl from './assets/waving-hand.gif';
 
 // TODO TEST
 import "@tensorflow/tfjs-backend-webgl";
-import * as tf from "@tensorflow/tfjs-core";
+// import * as tf from "@tensorflow/tfjs-core";
 import * as tfjsWasm from "@tensorflow/tfjs-backend-wasm";
 
 tfjsWasm.setWasmPaths(
@@ -20,14 +21,12 @@ import * as handpose from "@tensorflow-models/handpose";
 import { Camera } from "./helpers/camera";
 import { GE } from "./helpers/gestureEstimator";
 
-import { drawHand, newDrawHand } from "./helpers/handPoseDraw";
+import { drawHand } from "./helpers/handPoseDraw";
 import Box from "./wordle/components/Box";
 
 export function App() {
   const [loading, setLoading] = useState(true);
   const [currentLetter, setCurrentLetter] = useState<string>();
-  const [selectedLetter, setSelectedLetter] = useState<string>();
-  const [confidence, setConfidence] = useState<number>(0);
   const [timeoutID, setTimeoutID] = useState<NodeJS.Timeout>();
   const [isCountingDown, setIsCountingDown] = useState(false);
   const [input, setInput] = useState<string>("");
@@ -45,7 +44,6 @@ export function App() {
           previousLetter === currentLetter
         ) {
           if (input.length < 5 && currentLetter !== "👍") {
-            setSelectedLetter(currentLetter);
             setInput((currInput) => currInput + currentLetter);
           } else if (input.length === 5 && currentLetter === "👍") {
             addWordButtonRef.current.click();
@@ -107,7 +105,6 @@ export function App() {
             setCurrentLetter(
               estimatedGestures.gestures[maxConfidenceIndex].name
             );
-            setConfidence(maxConfidence);
           }
         } else {
           document.getElementById("countdown-timer").style.display = "none";
@@ -160,8 +157,11 @@ export function App() {
         }
       }}
     >
-      <h1 className="font-bold">Handle</h1>
-      <div className="max-w-lg mb-2">
+      <div className="flex gap-3 items-center">
+        <h1 className="font-bold align-middle">Handle</h1>
+        <img width={50} height={50} className="inline" src={wavingHandUrl} />
+      </div>
+      <div className="max-w-xl mb-2">
         <h2 className="text-xl mb-2">Welcome to the Handle prototype!</h2>
         <div className="mb-2">
           <p>Use American Sign Language letters to spell a five-letter word.</p>
@@ -170,7 +170,6 @@ export function App() {
             button for a cheat sheet.
           </p>
         </div>
-      </div>
       <h2 className="text-2xl font-semibold">Rules</h2>
       <p className="mb-2">
         The game works like the popular game Wordle. Guess a 5 letter word, and
@@ -179,29 +178,30 @@ export function App() {
       </p>
       <div className="flex flex-col gap-3 mb-2">
         <div className="flex flex-row gap-2">
-          <Box style={{ width: "2rem", height: "2rem" }} t="wrong" letter="" />
+          <Box style={{ maxWidth: "2rem", height: "2rem" }} t="wrong" letter="" />
           <p className="self-center">
             Incorrect letter. It does not belong to the word.
           </p>
         </div>
         <div className="flex flex-row gap-2">
           <Box
-            style={{ width: "2rem", height: "2rem" }}
+            style={{ maxWidth: "2rem", height: "2rem" }}
             t="wplaced"
             letter=""
-          />
+            />
           <p className="self-center">
             Misplaced letter. It belongs to the word, but is in the wrong
             position.
           </p>
         </div>
         <div className="flex flex-row gap-2">
-          <Box style={{ width: "2rem", height: "2rem" }} t="right" letter="" />
+          <Box style={{ maxWidth: '2rem', height: "2rem" }} t="right" letter="" />
           <p className="self-center">
             Correct letter. It belongs to the word, and is in the right
             position.
           </p>
         </div>
+      </div>
       </div>
 
       <h2 className="text-2xl font-semibold">Ways to confirm your guess</h2>
@@ -265,16 +265,9 @@ export function App() {
           addWordButtonRef={addWordButtonRef}
         />
       </div>
-      {/* {!loading && (
-        <>
-          <h2>{currentLetter}</h2>
-          <h3>Confidence score: {confidence * 10}%</h3>
-          <h2>CONFIRMED letter: {selectedLetter}</h2>
-        </>
-      )} */}
       <div className="flex flex-row gap-2">
-        {input?.split("").map((letter) => (
-          <Box t="display" letter={letter} />
+        {input?.split("").map((letter, index) => (
+          <Box key={index} t="display" letter={letter} />
         ))}
       </div>
       {input ? (
@@ -318,6 +311,7 @@ export function App() {
           />
         </div>
       </Modal>
+      {/* </canvas> */}
     </div>
   );
 }
