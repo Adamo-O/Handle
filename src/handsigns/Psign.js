@@ -35,11 +35,11 @@ pSign.addDirection(Finger.Thumb, FingerDirection.HorizontalRight, 0.70);
 
 //Index
 pSign.addCurl(Finger.Index, FingerCurl.NoCurl, 1);
-pSign.addDirection(Finger.Index, FingerDirection.HorizontalRight, 0.70);
+pSign.addDirection(Finger.Index, FingerDirection.HorizontalRight, 0.75);
 
 //Middle
 pSign.addCurl(Finger.Middle, FingerCurl.HalfCurl, 1);
-pSign.addDirection(Finger.Middle, FingerDirection.DiagonalDownRight, 0.70);
+pSign.addDirection(Finger.Middle, FingerDirection.DiagonalDownRight, 0.75);
 
 //Ring
 pSign.addCurl(Finger.Ring, FingerCurl.FullCurl, 1);

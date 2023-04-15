@@ -30,8 +30,9 @@ export const mSign = new GestureDescription('M');
 //   ]
 
 //Thumb
-mSign.addCurl(Finger.Thumb, FingerCurl.HalfCurl, 1.0);
-mSign.addDirection(Finger.Thumb, FingerDirection.DiagonalUpLeft, 0.70);
+mSign.addCurl(Finger.Thumb, FingerCurl.HalfCurl, 1);
+// mSign.addDirection(Finger.Thumb, FingerDirection.HorizontalLeft, 0.7);
+mSign.addDirection(Finger.Thumb, FingerDirection.HorizontalRight, 0.7);
 
 //Index
 mSign.addCurl(Finger.Index, FingerCurl.FullCurl, 1);

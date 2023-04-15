@@ -30,12 +30,12 @@ export const lSign = new GestureDescription('L');
 //   ]
 
 //Thumb
-lSign.addCurl(Finger.Thumb, FingerCurl.NoCurl, 1.0);
+lSign.addCurl(Finger.Thumb, FingerCurl.NoCurl, 1.1);
 lSign.addDirection(Finger.Thumb, FingerDirection.DiagonalUpRight, 0.70);
 
 //Index
-lSign.addCurl(Finger.Index, FingerCurl.NoCurl, 1);
-lSign.addDirection(Finger.Index, FingerDirection.VerticalUp, 0.70);
+lSign.addCurl(Finger.Index, FingerCurl.NoCurl, 1.1);
+lSign.addDirection(Finger.Index, FingerDirection.VerticalUp, 0.90);
 
 //Middle
 lSign.addCurl(Finger.Middle, FingerCurl.FullCurl, 1);

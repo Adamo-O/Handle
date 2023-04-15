@@ -30,12 +30,13 @@ export const xSign = new GestureDescription('X');
 //   ]
 
 //Thumb
-xSign.addCurl(Finger.Thumb, FingerCurl.HalfCurl, 1.0);
+xSign.addCurl(Finger.Thumb, FingerCurl.FullCurl, .9);
 xSign.addDirection(Finger.Thumb, FingerDirection.VerticalUp, 0.70);
 
 //Index
-xSign.addCurl(Finger.Index, FingerCurl.HalfCurl, 1);
-xSign.addDirection(Finger.Index, FingerDirection.VerticalUp, 0.70);
+xSign.addCurl(Finger.Index, FingerCurl.HalfCurl, 1.3);
+xSign.addDirection(Finger.Index, FingerDirection.DiagonalUpLeft, 0.80);
+xSign.addDirection(Finger.Index, FingerDirection.DiagonalUpRight, 0.80);
 
 //Middle
 xSign.addCurl(Finger.Middle, FingerCurl.FullCurl, 1);
