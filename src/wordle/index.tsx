@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import Box from "./components/Box";
 
+// API link for random words
+const random_word_api = 'https://random-word-api.herokuapp.com/word?length=5&lang=en';
+
 /**
  * @param curent_word The word to guess, used to determine the color of the letters
  * @param row The 5 letter string of the line
@@ -74,7 +77,7 @@ function Wordle({
   // fetches a random word from an API and sets it to the current word
   useEffect(() => {
     if (newWord || curentWord === undefined) {
-      fetch(import.meta.env.VITE_WORD_API_URL)
+      fetch(random_word_api)
         .then((r) => r.json() as Promise<string[]>)
         .then((r) => setCurentWord(r[0]));
       setNewWord(false);
