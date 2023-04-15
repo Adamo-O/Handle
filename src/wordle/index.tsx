@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Box from "./components/Box";
 
 // API link for random words
-const random_word_api = 'https://random-word-api.herokuapp.com/word?length=5&lang=en';
+const random_word_api = 'https://random-word-api.vercel.app/api?words=1&length=5';
 
 /**
  * @param curent_word The word to guess, used to determine the color of the letters
