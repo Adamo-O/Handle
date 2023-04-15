@@ -160,7 +160,57 @@ export function App() {
         }
       }}
     >
-      <h1>Handle</h1>
+      <h1 className="font-bold">Handle</h1>
+      <div className="max-w-lg mb-2">
+        <h2 className="text-xl mb-2">Welcome to the Handle prototype!</h2>
+        <div className="mb-2">
+          <p>Use American Sign Language letters to spell a five-letter word.</p>
+          <p>
+            If you would like help with the ASL alphabet, click the "Need Help?"
+            button for a cheat sheet.
+          </p>
+        </div>
+      </div>
+      <h2 className="text-2xl font-semibold">Rules</h2>
+      <p className="mb-2">
+        The game works like the popular game Wordle. Guess a 5 letter word, and
+        the letters will change colour depending on its presence in the correct
+        word.
+      </p>
+      <div className="flex flex-col gap-3 mb-2">
+        <div className="flex flex-row gap-2">
+          <Box style={{ width: "2rem", height: "2rem" }} t="wrong" letter="" />
+          <p className="self-center">
+            Incorrect letter. It does not belong to the word.
+          </p>
+        </div>
+        <div className="flex flex-row gap-2">
+          <Box
+            style={{ width: "2rem", height: "2rem" }}
+            t="wplaced"
+            letter=""
+          />
+          <p className="self-center">
+            Misplaced letter. It belongs to the word, but is in the wrong
+            position.
+          </p>
+        </div>
+        <div className="flex flex-row gap-2">
+          <Box style={{ width: "2rem", height: "2rem" }} t="right" letter="" />
+          <p className="self-center">
+            Correct letter. It belongs to the word, and is in the right
+            position.
+          </p>
+        </div>
+      </div>
+
+      <h2 className="text-2xl font-semibold">Ways to confirm your guess</h2>
+      <ul className="list-disc ml-6 mb-3">
+        <li>Make a Thumbs Up 👍 gesture</li>
+        <li>Press the "Enter" key</li>
+        <li>Click the "Enter" button on the bottom right</li>
+      </ul>
+
       {loading && <h2>Loading 🔃</h2>}
       <div className="flex flex-wrap gap-6">
         <div>
@@ -251,7 +301,7 @@ export function App() {
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
-        className="rounded border border-slate-600 bg-slate-200 dark:border-0 dark:bg-gray-800 dark:text-slate-100 w-3/4 h-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        className="rounded border border-slate-600 bg-slate-200 dark:border-0 dark:bg-gray-800 dark:text-slate-100 w-1/2 h-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
       >
         <button
           className="absolute top-0 right-0 m-4"
@@ -264,7 +314,7 @@ export function App() {
           <img
             src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/asl-sign-language-hand-alphabet-teacher-qwerty-designs.jpg"
             alt="Image description"
-            className="w-3/5 h-auto flex justify-center mb-20"
+            className="w-2/5 h-auto flex justify-center mb-20"
           />
         </div>
       </Modal>

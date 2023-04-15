@@ -1,9 +1,12 @@
+import { ComponentProps } from "react";
 import "./Box.css";
 
-function Box(props: {
+interface BoxProps extends ComponentProps<'div'> {
   t?: "edit" | "right" | "wrong" | "wplaced" | "display";
   letter: string;
-}) {
+}
+
+function Box(props: BoxProps) {
   let case_type = "";
 
   switch (props.t) {
@@ -26,7 +29,7 @@ function Box(props: {
       break;
   }
 
-  return <div className={"case " + case_type}>{props.letter}</div>;
+  return <div {...props} className={`${props.className} case ${case_type}`}>{props.letter}</div>;
 }
 
 export default Box;
