@@ -87,7 +87,7 @@ function Wordle({
   function push_rows() {
     if (!hasWon() && !hasLost() && input.length === 5) {
       let r = rows;
-      r.push(input);
+      r.push(input.toLowerCase());
       setRows(r);
       if (input === curentWord) {
         setWin(true);

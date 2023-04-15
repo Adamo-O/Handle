@@ -262,7 +262,7 @@ export function App() {
         <h1 className="text-white text-center my-6">ASL Cheat Sheet</h1>
         <div className="flex items-center justify-center">
           <img
-            src="https://d.newsweek.com/en/full/1394686/asl-getty-images.jpg"
+            src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/asl-sign-language-hand-alphabet-teacher-qwerty-designs.jpg"
             alt="Image description"
             className="w-3/5 h-auto flex justify-center mb-20"
           />
