@@ -51,7 +51,7 @@ export function App() {
         }
         console.log(currentLetter);
       },
-      3000,
+      2000,
       currentLetter
     );
 
@@ -243,7 +243,7 @@ export function App() {
                   }}
                   isPlaying
                   colors="#E5007B"
-                  duration={3}
+                  duration={2}
                   size={250}
                 >
                   {({ remainingTime }) => (
