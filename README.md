@@ -2,6 +2,8 @@
 
 Wordle but you have to use sign language to enter the letters!
 
+[Check it out here 🚀](https://adamoorsini.com/Handle/)
+
 ## Team Members 🧑‍🤝‍🧑
 | Name                      | Id       |
 |---------------------------|----------|
@@ -12,15 +14,16 @@ Wordle but you have to use sign language to enter the letters!
 | Craig Kogan               | 40175780 |
 | Maxx Freund               | 40174065 |
 
-## How to run
+## How to run 🏃‍♂️
 Need to have `node` and `npm` and a camera 📷
+
 Steps:
 - Clone repo
-- Open terminal in root of directory
+- Open terminal in root of project directory 
 - Run `npm ci`
 - Run `npm run build`
 - Run `npm run preview`
-- Open browser to link that was provided from vite\
+- Open browser to link that was provided from vite
 - Play the game! 🎉
 
 ⚠️ Due to the prototype nature of this application, the word of the day is stubbed and changes on reload of the site
