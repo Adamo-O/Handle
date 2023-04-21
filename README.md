@@ -1,4 +1,4 @@
-# Handle <img src="https://user-images.githubusercontent.com/75464454/233691477-22334038-52f8-43b9-b08a-966d2fc41efc.gif" alt="waving-hand" width="3rem" height="3rem"/>
+# Handle <img src="https://user-images.githubusercontent.com/75464454/233691477-22334038-52f8-43b9-b08a-966d2fc41efc.gif" alt="waving-hand" width="40" height="40"/>
 
 Wordle but you have to use sign language to enter the letters!
 
