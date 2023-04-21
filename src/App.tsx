@@ -1,15 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-// import { app } from "./helpers/handDetection"; // TODO TEST
-// import { app as app2 } from "./helpers/handPose"; // TODO TEST
 import "./App.css";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import Wordle from "./wordle";
-import Modal from "react-modal";
-import wavingHandUrl from './assets/waving-hand.gif';
-
-// TODO TEST
+import wavingHandUrl from "./assets/waving-hand.gif";
 import "@tensorflow/tfjs-backend-webgl";
-// import * as tf from "@tensorflow/tfjs-core";
 import * as tfjsWasm from "@tensorflow/tfjs-backend-wasm";
 
 tfjsWasm.setWasmPaths(
@@ -34,6 +28,7 @@ export function App() {
 
   const addWordButtonRef = useRef<HTMLButtonElement>(null);
 
+  // New letter shown, reset countdown
   useEffect(() => {
     clearTimeout(timeoutID);
     const timeoutid = setTimeout(
@@ -43,6 +38,7 @@ export function App() {
           currentLetter &&
           previousLetter === currentLetter
         ) {
+          // Confirm full word using thumbs up sign
           if (input.length < 5 && currentLetter !== "👍") {
             setInput((currInput) => currInput + currentLetter);
           } else if (input.length === 5 && currentLetter === "👍") {
@@ -101,7 +97,6 @@ export function App() {
             const maxConfidence = Math.max.apply(undefined, confidence);
             const maxConfidenceIndex = confidence.indexOf(maxConfidence);
 
-            // console.log(estimatedGestures);
             setCurrentLetter(
               estimatedGestures.gestures[maxConfidenceIndex].name
             );
@@ -136,15 +131,8 @@ export function App() {
 
   useEffect(() => {
     app().then(() => {
-      console.log("finished loading");
-
       setLoading(false);
     });
-    // app().then(() => {
-    //   console.log("finished loading");
-
-    //   setLoading(false);
-    // });
   }, []);
 
   return (
@@ -166,42 +154,50 @@ export function App() {
         <div className="mb-2">
           <p>Use American Sign Language letters to spell a five-letter word.</p>
           <p>
-            If you would like help with the ASL alphabet, click the "Need Help?"
+            If you would like help with the ASL alphabet, click the "Show alphabet"
             button for a cheat sheet.
           </p>
         </div>
-      <h2 className="text-2xl font-semibold">Rules</h2>
-      <p className="mb-2">
-        The game works like the popular game Wordle. Guess a 5 letter word, and
-        the letters will change colour depending on its presence in the correct
-        word.
-      </p>
-      <div className="flex flex-col gap-3 mb-2">
-        <div className="flex flex-row gap-2">
-          <Box style={{ maxWidth: "2rem", height: "2rem" }} t="wrong" letter="" />
-          <p className="self-center">
-            Incorrect letter. It does not belong to the word.
-          </p>
-        </div>
-        <div className="flex flex-row gap-2">
-          <Box
-            style={{ maxWidth: "2rem", height: "2rem" }}
-            t="wplaced"
-            letter=""
+        <h2 className="text-2xl font-semibold">Rules</h2>
+        <p className="mb-2">
+          The game works like the popular game Wordle. Guess a 5 letter word,
+          and the letters will change colour depending on its presence in the
+          correct word.
+        </p>
+        <div className="flex flex-col gap-3 mb-2">
+          <div className="flex flex-row gap-2">
+            <Box
+              style={{ maxWidth: "2rem", height: "2rem" }}
+              t="wrong"
+              letter=""
             />
-          <p className="self-center">
-            Misplaced letter. It belongs to the word, but is in the wrong
-            position.
-          </p>
+            <p className="self-center">
+              Incorrect letter. It does not belong to the word.
+            </p>
+          </div>
+          <div className="flex flex-row gap-2">
+            <Box
+              style={{ maxWidth: "2rem", height: "2rem" }}
+              t="wplaced"
+              letter=""
+            />
+            <p className="self-center">
+              Misplaced letter. It belongs to the word, but is in the wrong
+              position.
+            </p>
+          </div>
+          <div className="flex flex-row gap-2">
+            <Box
+              style={{ maxWidth: "2rem", height: "2rem" }}
+              t="right"
+              letter=""
+            />
+            <p className="self-center">
+              Correct letter. It belongs to the word, and is in the right
+              position.
+            </p>
+          </div>
         </div>
-        <div className="flex flex-row gap-2">
-          <Box style={{ maxWidth: '2rem', height: "2rem" }} t="right" letter="" />
-          <p className="self-center">
-            Correct letter. It belongs to the word, and is in the right
-            position.
-          </p>
-        </div>
-      </div>
       </div>
 
       <h2 className="text-2xl font-semibold">Ways to confirm your guess</h2>
@@ -211,7 +207,7 @@ export function App() {
         <li>Click the "Enter" button on the bottom right</li>
       </ul>
 
-      {loading && <h2>Loading 🔃</h2>}
+      {loading && <h2>Loading Video... 🔃</h2>}
       <div className="flex flex-wrap gap-6">
         <div>
           <div className="canvas-wrapper relative inline">
@@ -248,17 +244,35 @@ export function App() {
                 >
                   {({ remainingTime }) => (
                     <div className="flex flex-col">
-                      <h2 className="font-bold text-2xl">{currentLetter}</h2>
-                      <h3 className="font-bold text-lg">{remainingTime}</h3>
+                      <h2 className="font-bold text-2xl text-white">
+                        {currentLetter}
+                      </h2>
+                      <h3 className="font-bold text-lg text-white">
+                        {remainingTime}
+                      </h3>
                     </div>
                   )}
-                  {/* <p>{countDown}</p> */}
                 </CountdownCircleTimer>
               )}
             </div>
           </div>
           <div id="webcam-container"></div>
         </div>
+        {modalIsOpen && (
+          <div>
+            <img
+              src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/asl-sign-language-hand-alphabet-teacher-qwerty-designs.jpg"
+              alt="ASL Alphabet hint"
+              className="h-[425px] mb-3"
+            />
+            <button
+              className="w-full rounded border border-slate-600 bg-slate-200 text-black transition-colors hover:bg-slate-400 disabled:bg-slate-300 dark:border-0 dark:bg-gray-800 dark:text-slate-100 dark:hover:bg-gray-600 "
+              onClick={() => setModalIsOpen(false)}
+            >
+              Hide
+            </button>
+          </div>
+        )}
         <Wordle
           input={input}
           setInput={setInput}
@@ -285,33 +299,11 @@ export function App() {
       )}
 
       <button
-        onClick={() => setModalIsOpen(true)}
-        className="rounded border border-slate-600 bg-slate-200 text-black transition-colors hover:bg-slate-400 disabled:bg-slate-300 dark:border-0 dark:bg-gray-800 dark:text-slate-100 dark:hover:bg-gray-600"
+        onClick={() => setModalIsOpen((curr) => !curr)}
+        className="rounded border border-slate-600 bg-slate-200 text-black transition-colors hover:bg-slate-400 disabled:bg-slate-300 dark:border-0 dark:bg-gray-800 dark:text-slate-100 dark:hover:bg-gray-600 mb-3"
       >
-        Need Help?
+        {modalIsOpen ? "Hide" : "Show"} alphabet
       </button>
-
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        className="rounded border border-slate-600 bg-slate-200 dark:border-0 dark:bg-gray-800 dark:text-slate-100 w-1/2 h-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-      >
-        <button
-          className="absolute top-0 right-0 m-4"
-          onClick={() => setModalIsOpen(false)}
-        >
-          X
-        </button>
-        <h1 className="text-white text-center my-6">ASL Cheat Sheet</h1>
-        <div className="flex items-center justify-center">
-          <img
-            src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/asl-sign-language-hand-alphabet-teacher-qwerty-designs.jpg"
-            alt="Image description"
-            className="w-2/5 h-auto flex justify-center mb-20"
-          />
-        </div>
-      </Modal>
-      {/* </canvas> */}
     </div>
   );
 }

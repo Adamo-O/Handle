@@ -122,74 +122,45 @@ function Wordle({
           gravity={0.1}
         />
       )}
-      <div className="Wordle inline flex-grow">
-        <div className="flex items-center justify-center">
-          <div className="flex w-max flex-col rounded border border-slate-600 p-4 shadow">
-            <button
-              className="absolute h-10 w-20 rounded border border-slate-600 bg-slate-200 text-black transition-colors hover:bg-slate-400 disabled:bg-slate-300 dark:border-0 dark:bg-gray-800 dark:text-slate-100 dark:hover:bg-gray-600"
-              onClick={reset_game}
-            >
-              New
-            </button>
-            <h1
-              className={`mb-6 mt-2 text-center text-xl font-bold transition-colors ${(() => {
-                if (hasWon()) {
-                  return "text-green-600";
-                } else if (hasLost()) {
-                  return "text-red-600";
-                } else {
-                  return "text-black dark:text-slate-100";
-                }
-              })()}`}
-            >
-              {hasWon() ? "You Won" : hasLost() ? "You Lose" : "Handle"}
-            </h1>
-            <div className="grid select-none grid-cols-5 grid-rows-6 gap-y-4 gap-x-2">
-              {(() => {
-                let lines = [];
-                for (let r = 0; r < 5; r++) {
-                  lines.push(build_row(curentWord, rows[r], r));
-                }
-                return lines;
-              })()}
-              {/* <input
-              type="text"
-              name="input"
-              id="input"
-              className="transition-color col-span-4 h-16 appearance-none rounded border border-slate-600 bg-slate-200 pl-4 text-left text-black focus:outline-none dark:border-0 dark:bg-gray-800 dark:text-white"
-              placeholder={
-                hasWon() || hasLost() ? "Try again?" : "Type a word here..."
+      <div className="flex justify-center ">
+        <div className="flex w-max flex-col rounded border border-slate-600 p-4 shadow">
+          <h1
+            className={`mb-6 mt-2 text-center text-xl font-bold transition-colors ${(() => {
+              if (hasWon()) {
+                return "text-green-600";
+              } else if (hasLost()) {
+                return "text-red-600";
+              } else {
+                return "text-black dark:text-slate-100";
               }
-              value={input}
-              disabled={hasWon() || hasLost() || newWord}
-              onChange={(e) => {
-                if (
-                  e.target.value.length <= 5 &&
-                  (/^[a-zA-Z]+$/.test(e.target.value) ||
-                    e.target.value === "") &&
-                  !hasWon()
-                ) {
-                  setInput(e.target.value);
-                }
-              }}
-              onKeyDown={(e) => {
-                if (e.key && e.key == "Enter") {
-                  push_rows();
-                }
-              }}
-              autoFocus
-            /> */}
-              <button
-                ref={addWordButtonRef}
-                className="h-16 w-30 rounded border border-slate-600 bg-slate-200 text-black transition-colors hover:bg-slate-400 disabled:bg-slate-300 dark:border-0 dark:bg-gray-800 dark:text-slate-100 dark:hover:bg-gray-600"
-                onClick={() => {
-                  push_rows();
-                }}
-              >
-                Enter
-              </button>
-            </div>
+            })()}`}
+          >
+            {hasWon() ? "You Won" : hasLost() ? "You Lose" : "Handle"}
+          </h1>
+          <div className="grid select-none grid-cols-5 grid-rows-5 gap-y-4 gap-x-2 mb-6">
+            {(() => {
+              let lines = [];
+              for (let r = 0; r < 5; r++) {
+                lines.push(build_row(curentWord, rows[r], r));
+              }
+              return lines;
+            })()}
           </div>
+          <button
+            ref={addWordButtonRef}
+            className="rounded mb-3 border border-slate-600 bg-slate-200 text-black transition-colors hover:bg-slate-400 disabled:bg-slate-300 dark:border-0 dark:bg-gray-800 dark:text-slate-100 dark:hover:bg-gray-600"
+            onClick={() => {
+              push_rows();
+            }}
+          >
+            Enter Word
+          </button>
+          <button
+            className="rounded border-0 border-emerald-600 bg-emerald-600 text-black transition-colors hover:bg-emerald-500 disabled:bg-emerald-300"
+            onClick={reset_game}
+          >
+            New Game
+          </button>
         </div>
       </div>
     </>

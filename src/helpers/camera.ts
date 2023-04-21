@@ -15,7 +15,6 @@
  * =============================================================================
  */
 import { Hand } from "@tensorflow-models/hand-pose-detection";
-import * as scatter from "scatter-gl";
 
 const VIDEO_SIZE = { width: 640, height: 480 };
 const DEFAULT_LINE_WIDTH = 2;
@@ -97,7 +96,7 @@ export class Camera {
    * Initiate a Camera instance and wait for the camera stream to be ready.
    * @param cameraParam From app `STATE.camera`.
    */
-  static async setupCamera(cameraParam: {targetFPS: number}) {
+  static async setupCamera(cameraParam: { targetFPS: number }) {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       throw new Error(
         "Browser API navigator.mediaDevices.getUserMedia not available"
@@ -105,10 +104,9 @@ export class Camera {
     }
 
     const { targetFPS } = cameraParam;
-    const $size = VIDEO_SIZE;
     const videoConfig = {
-      'audio': false,
-      'video': {
+      audio: false,
+      video: {
         facingMode: "user",
         // Only setting the video to a specified size for large screen, on
         // mobile devices accept the default size.
@@ -141,9 +139,10 @@ export class Camera {
 
     camera.canvas.width = videoWidth;
     camera.canvas.height = videoHeight;
-    const canvasContainer = document.querySelector<HTMLDivElement>(".canvas-wrapper");
-    canvasContainer.style.width = `width: ${videoWidth}px`;
-    canvasContainer.style.height = `width: ${videoHeight}px`;
+    const canvasContainer =
+      document.querySelector<HTMLDivElement>(".canvas-wrapper");
+    canvasContainer.style.width = `${videoWidth}px`;
+    canvasContainer.style.height = `${videoHeight}px`;
 
     // Because the image from camera is mirrored, need to flip horizontally.
     camera.ctx.translate(camera.video.videoWidth, 0);
@@ -209,7 +208,7 @@ export class Camera {
    * @param keypoints A list of keypoints.
    * @param handedness Label of hand (either Left or Right).
    */
-  drawKeypoints(keypoints: Hand['keypoints'], handedness: Hand['handedness']) {
+  drawKeypoints(keypoints: Hand["keypoints"], handedness: Hand["handedness"]) {
     const keypointsArray = keypoints;
     this.ctx.fillStyle = handedness === "Left" ? "Red" : "Blue";
     this.ctx.strokeStyle = "White";
